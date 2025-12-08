@@ -1,0 +1,2 @@
+localStorage.removeItem('farmchain_data');
+location.reload();

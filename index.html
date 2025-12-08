@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmChain - Blockchain Supply Chain for Farmers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <!-- Add these to your HTML head section -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-link me-2"></i>
+                <span class="fw-bold">FarmChain</span>
+                <small class="ms-2 d-none d-md-inline">Blockchain Supply Chain for Farmers</small>
+            </a>
+            <div class="d-flex">
+                <span class="badge bg-light text-dark me-2">
+                    <i class="fas fa-box me-1"></i>
+                    <span id="productCount">0</span> Products
+                </span>
+                <span class="badge bg-light text-dark">
+                    <i class="fas fa-cube me-1"></i>
+                    <span id="blockCount">1</span> Blocks
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Stats Row -->
+        <div class="row mb-4">
+            <div class="col-md-3 col-6">
+                <div class="card bg-primary text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-tractor display-6 mb-2"></i>
+                        <h5 id="farmCount">0</h5>
+                        <small>Farms Registered</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card bg-success text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-apple-alt display-6 mb-2"></i>
+                        <h5 id="activeProducts">0</h5>
+                        <small>Active Products</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card bg-info text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-shipping-fast display-6 mb-2"></i>
+                        <h5 id="shipments">0</h5>
+                        <small>Shipments</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card bg-warning text-dark">
+                    <div class="card-body text-center">
+                        <i class="fas fa-qrcode display-6 mb-2"></i>
+                        <h5 id="qrCodes">0</h5>
+                        <small>QR Generated</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Left Column: Create Product -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-seedling me-2"></i>Harvest New Product
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="createProductForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-farm me-1"></i>Farm Name *
+                                    </label>
+                                    <input type="text" class="form-control" id="farmName" required
+                                           placeholder="Green Valley Farm">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-user-farmer me-1"></i>Farmer Name *
+                                    </label>
+                                    <input type="text" class="form-control" id="farmerName" required
+                                           placeholder="John Smith">
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-carrot me-1"></i>Product Type *
+                                    </label>
+                                    <select class="form-select" id="productType" required>
+                                        <option value="">Select Product</option>
+                                        <option value="Mango">🥭 Mango</option>
+                                        <option value="Avocado">🥑 Avocado</option>
+                                        <option value="Banana">🍌 Banana</option>
+                                        <option value="Apple">🍎 Apple</option>
+                                        <option value="Tomato">🍅 Tomato</option>
+                                        <option value="Strawberry">🍓 Strawberry</option>
+                                        <option value="Orange">🍊 Orange</option>
+                                        <option value="Grapes">🍇 Grapes</option>
+                                        <option value="Wheat">🌾 Wheat</option>
+                                        <option value="Rice">🍚 Rice</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-calendar-alt me-1"></i>Harvest Date *
+                                    </label>
+                                    <input type="date" class="form-control" id="harvestDate" required>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        <i class="fas fa-thermometer-half me-1"></i>Temperature (°C)
+                                    </label>
+                                    <input type="number" class="form-control" id="temperature" 
+                                           placeholder="25" step="0.1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        <i class="fas fa-tint me-1"></i>Humidity (%)
+                                    </label>
+                                    <input type="number" class="form-control" id="humidity" 
+                                           placeholder="65" step="0.1">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Farm Location
+                                </label>
+                                <input type="text" class="form-control" id="farmLocation"
+                                       placeholder="Village, District, State">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-sticky-note me-1"></i>Additional Notes
+                                </label>
+                                <textarea class="form-control" id="productNotes" rows="2"
+                                          placeholder="Organic, Grade A, etc."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-success btn-lg w-100">
+                                <i class="fas fa-plus-circle me-2"></i>Create Product & Generate QR Code
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- QR Code Display -->
+                <div class="card" id="qrCard" style="display: none;">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-qrcode me-2"></i>Product QR Code
+                        </h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="qr-container p-3 mb-3">
+                            <div id="qrContainer"></div>
+                        </div>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Product ID:</strong> 
+                            <code id="productIdDisplay" class="ms-2"></code>
+                        </div>
+                        <p class="text-muted mb-3">
+                            Scan this QR code to track the product's complete journey from farm to supermarket
+                        </p>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                            <button class="btn btn-outline-primary" onclick="window.printQR()">
+                                <i class="fas fa-print me-2"></i>Print
+                            </button>
+                            <button class="btn btn-outline-secondary" onclick="window.downloadQR()">
+                                <i class="fas fa-download me-2"></i>Download
+                            </button>
+                            <button class="btn btn-outline-success" onclick="window.shareProduct()">
+                                <i class="fas fa-share-alt me-2"></i>Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Track Product -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-search me-2"></i>Track Product Journey
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group input-group-lg mb-4">
+                            <input type="text" class="form-control" id="trackProductId" 
+                                   placeholder="Enter Product ID or Scan QR Code">
+                            <button class="btn btn-primary" type="button" onclick="window.trackProduct()">
+                                <i class="fas fa-search me-2"></i>Track
+                            </button>
+                        </div>
+                        
+                        <!-- QR Scanner Button -->
+                        <div class="text-center mb-4">
+                            <button class="btn btn-outline-info" onclick="window.openQRScanner()">
+                                <i class="fas fa-camera me-2"></i>Scan QR Code
+                            </button>
+                            <button class="btn btn-outline-secondary" onclick="window.showAllProducts()">
+                                <i class="fas fa-list me-2"></i>View All Products
+                            </button>
+                        </div>
+                        
+                        <div id="trackingResult">
+                            <div class="text-center text-muted p-5">
+                                <i class="fas fa-box-open display-1 text-muted"></i>
+                                <h5 class="mt-3">Enter a Product ID to track its journey</h5>
+                                <p>See the complete history from harvest to supermarket shelf</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Update Location Form -->
+                <div class="card" id="updateCard" style="display: none;">
+                    <div class="card-header bg-warning">
+                        <h5 class="mb-0">
+                            <i class="fas fa-map-marker-alt me-2"></i>Update Product Location
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="updateLocationForm">
+                            <div class="alert alert-light mb-3">
+                                <strong><i class="fas fa-barcode me-2"></i>Product ID:</strong> 
+                                <span id="currentProductId" class="badge bg-primary ms-2"></span>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Current Action *</label>
+                                <select class="form-select" id="action" required>
+                                    <option value="">Select Current Status</option>
+                                    <option value="🌱 Harvested">🌱 Harvested</option>
+                                    <option value="💧 Washed & Cleaned">💧 Washed & Cleaned</option>
+                                    <option value="✅ Quality Checked">✅ Quality Checked</option>
+                                    <option value="📊 Graded & Sorted">📊 Graded & Sorted</option>
+                                    <option value="📦 Packaged">📦 Packaged</option>
+                                    <option value="🏷️ Labeled">🏷️ Labeled</option>
+                                    <option value="❄️ Cold Storage">❄️ Cold Storage</option>
+                                    <option value="🚚 Loaded for Transport">🚚 Loaded for Transport</option>
+                                    <option value="🚛 In Transit">🚛 In Transit</option>
+                                    <option value="🏭 At Distribution Center">🏭 At Distribution Center</option>
+                                    <option value="🏪 Delivered to Retailer">🏪 Delivered to Retailer</option>
+                                    <option value="🛒 On Supermarket Shelf">🛒 On Supermarket Shelf</option>
+                                    <option value="💰 Sold to Customer">💰 Sold to Customer</option>
+                                </select>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-8 mb-3">
+                                    <label class="form-label">Location *</label>
+                                    <input type="text" class="form-control" id="location" required
+                                           placeholder="e.g., Cold Storage Unit 5, Mumbai">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Date</label>
+                                    <input type="date" class="form-control" id="updateDate">
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        <i class="fas fa-thermometer-half me-1"></i>Temperature (°C)
+                                    </label>
+                                    <input type="number" class="form-control" id="updateTemperature"
+                                           placeholder="Current temperature">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        <i class="fas fa-tint me-1"></i>Humidity (%)
+                                    </label>
+                                    <input type="number" class="form-control" id="updateHumidity"
+                                           placeholder="Current humidity">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-sticky-note me-1"></i>Notes
+                                </label>
+                                <textarea class="form-control" id="notes" rows="2"
+                                          placeholder="Any additional information..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-warning btn-lg w-100">
+                                <i class="fas fa-save me-2"></i>Update Journey
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blockchain Visualization -->
+        <div class="card mt-4">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-link me-2"></i>Blockchain Visualization
+                    <span class="badge bg-success float-end" id="chainStatus">Valid ✓</span>
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div id="blockchainVisualization" class="mb-4">
+                            <!-- Blocks will be displayed here -->
+                            <div class="text-center text-muted p-4">
+                                <i class="fas fa-cube display-1"></i>
+                                <p class="mt-3">No transactions yet. Create a product to see the blockchain in action!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header bg-secondary text-white">
+                                <h6 class="mb-0">Recent Products</h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="recentProductsList" class="list-group">
+                                    <!-- Recent products will appear here -->
+                                    <div class="text-center text-muted p-3">
+                                        No products yet
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card mt-3">
+                            <div class="card-header bg-secondary text-white">
+                                <h6 class="mb-0">Export Data</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-primary" onclick="window.exportBlockchain()">
+                                        <i class="fas fa-download me-2"></i>Export Blockchain
+                                    </button>
+                                    <button class="btn btn-outline-success" onclick="window.exportAllProducts()">
+                                        <i class="fas fa-file-export me-2"></i>Export All Products
+                                    </button>
+                                    <button class="btn btn-outline-info" onclick="window.saveToLocalStorage()">
+                                        <i class="fas fa-save me-2"></i>Save Data Locally
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-link me-2"></i>FarmChain</h5>
+                    <p>Blockchain-powered supply chain tracking for agricultural products.<br>
+                    Secure • Transparent • Immutable • Trustworthy</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">
+                        <i class="fas fa-shield-alt me-2"></i>Data stored in browser<br>
+                        <small>All data persists locally in your browser</small>
+                    </p>
+                </div>
+            </div>
+            <hr class="bg-light">
+            <div class="text-center">
+                <p class="mb-0">
+                    Made with <i class="fas fa-heart text-danger"></i> for Farmers
+                    | <span id="currentYear"></span>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for All Products -->
+    <div class="modal fade" id="productsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-boxes me-2"></i>All Products
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="allProductsList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Main JavaScript -->
+    <script src="script.js"></script>
+    <!-- Floating particles -->
+    <div class="floating-particle" style="top: 10%; left: 5%;"></div>
+    <div class="floating-particle" style="top: 30%; left: 90%; animation-delay: -1s;"></div>
+    <div class="floating-particle" style="top: 70%; left: 15%; animation-delay: -2s;"></div>
+    <div class="floating-particle" style="top: 85%; left: 80%; animation-delay: -3s;"></div>
+    <div class="floating-particle" style="top: 45%; left: 60%; animation-delay: -4s;"></div>
+
+    <!-- Floating Action Button -->
+    <div class="fab-container">
+    <button class="fab" onclick="window.openQRScanner()" title="Scan QR Code">
+        <i class="fas fa-qrcode"></i>
+    </button>
+    </div>
+</body>
+</html>
