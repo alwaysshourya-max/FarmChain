@@ -148,7 +148,7 @@ body::before {
 }
 
 .navbar-brand::after {
-    content: 'BLOCKCHAIN';
+    content: '';
     position: absolute;
     left: 0;
     top: 0;
